@@ -1,5 +1,6 @@
 import de.bezier.guido.*;
-//Declare and initialize constants NUM_ROWS and NUM_COLS = 20
+private final static int NUM_ROWS = 20;
+private final static int NUM_COLS = 20;
 private MSButton[][] buttons; //2d array of minesweeper buttons
 private ArrayList <MSButton> mines; //ArrayList of just the minesweeper buttons that are mined
 
@@ -12,14 +13,25 @@ void setup ()
     Interactive.make( this );
     
     //your code to initialize buttons goes here
-    
-    
-    
-    setMines();
+    buttons = new MSButton[NUM_ROWS][NUM_COLS];
+    mines = new ArrayList<MSButton>();
+    for (int r = 0; r < NUM_ROWS; r++){
+      for(int c = 0; c < NUM_COLS; c++){
+        buttons[r][c] = new MSButton(r,c);
+      }
+    }
+    for(int i = 0; i < 10; i++){
+      setMines();
+    }
 }
 public void setMines()
 {
-    //your code
+  int r = (int)(Math.random()*20);
+  int c = (int)(Math.random()*20);
+  if (!mines.contains(buttons[r][c])){
+    mines.add(buttons[r][c]);
+    System.out.println(r + " " + c);
+  }
 }
 
 public void draw ()
@@ -43,13 +55,17 @@ public void displayWinningMessage()
 }
 public boolean isValid(int r, int c)
 {
-    //your code here
-    return false;
+    return r >=0 && r<NUM_ROWS&& c>=0 && c<NUM_COLS;
 }
 public int countMines(int row, int col)
 {
     int numMines = 0;
-    //your code here
+    for(int r = row-1;r<=row+1;r++)
+      for(int c = col-1; c<=col+1;c++)
+        if(isValid(r,c) && mines.contains(buttons[r][c]))
+          numMines++;
+        if(mines.contains(buttons[row][col]))
+          numMines--;
     return numMines;
 }
 public class MSButton
@@ -61,8 +77,8 @@ public class MSButton
     
     public MSButton ( int row, int col )
     {
-        // width = 400/NUM_COLS;
-        // height = 400/NUM_ROWS;
+        width = 400/NUM_COLS;
+        height = 400/NUM_ROWS;
         myRow = row;
         myCol = col; 
         x = myCol*width;
@@ -82,8 +98,8 @@ public class MSButton
     {    
         if (flagged)
             fill(0);
-        // else if( clicked && mines.contains(this) ) 
-        //     fill(255,0,0);
+        else if(clicked && mines.contains(this)) 
+             fill(255,0,0);
         else if(clicked)
             fill( 200 );
         else 
