@@ -42,8 +42,13 @@ public void draw ()
 }
 public boolean isWon()
 {
-    
-    return false;
+    for (int r = 0; r < NUM_ROWS; r++)
+      for (int c = 0; c < NUM_COLS; c++)
+        if (buttons[r][c].clicked == true)
+          return false;
+         else
+          return true;
+
 }
 public void displayLosingMessage()
 {
@@ -127,7 +132,7 @@ public class MSButton
           for(int r = myRow-1;r<=myRow+1;r++)
             for(int c = myCol-1; c<=myCol+1;c++)
               if(isValid(r,c))
-                mousePressed();
+                buttons[r][c].mousePressed();
         } 
     }
     public void draw () 
