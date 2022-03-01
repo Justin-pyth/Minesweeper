@@ -20,7 +20,7 @@ void setup ()
         buttons[r][c] = new MSButton(r,c);
       }
     }
-    for(int i = 0; i < 10; i++){
+    for(int i = 0; i < 20; i++){
       setMines();
     }
 }
@@ -42,16 +42,33 @@ public void draw ()
 }
 public boolean isWon()
 {
-    //your code here
+    
     return false;
 }
 public void displayLosingMessage()
 {
-    //your code here
+  for (int r = 0; r < NUM_ROWS; r++){
+    for (int c = 0; c < NUM_COLS; c++){
+      if (mines.contains(buttons[r][c]))
+        buttons[r][c].clicked= true;
+    }
+  }
+  buttons[10][6].setLabel("Y");
+  buttons[10][7].setLabel("O");
+  buttons[10][8].setLabel("U");
+  buttons[10][10].setLabel("L");
+  buttons[10][11].setLabel("O");
+  buttons[10][12].setLabel("S");
+  buttons[10][13].setLabel("E");
 }
 public void displayWinningMessage()
 {
-    //your code here
+  buttons[10][6].setLabel("Y");
+  buttons[10][7].setLabel("O");
+  buttons[10][8].setLabel("U");
+  buttons[10][10].setLabel("W");
+  buttons[10][11].setLabel("I");
+  buttons[10][12].setLabel("N");
 }
 public boolean isValid(int r, int c)
 {
@@ -64,8 +81,8 @@ public int countMines(int row, int col)
       for(int c = col-1; c<=col+1;c++)
         if(isValid(r,c) && mines.contains(buttons[r][c]))
           numMines++;
-        if(mines.contains(buttons[row][col]))
-          numMines--;
+    if(mines.contains(buttons[row][col]))
+      numMines--;
     return numMines;
 }
 public class MSButton
@@ -92,7 +109,26 @@ public class MSButton
     public void mousePressed () 
     {
         clicked = true;
-        //your code here
+        if (mouseButton == RIGHT){
+          if (flagged == true)
+            flagged = false;
+          else {
+            flagged = true;
+            clicked = false; 
+           }
+        }
+        else if (mines.contains(this)){
+          displayLosingMessage();
+        }
+        else if (countMines(myRow,myCol) > 0){
+          myLabel = countMines(myRow,myCol) + "";
+        }
+        else{
+          for(int r = myRow-1;r<=myRow+1;r++)
+            for(int c = myCol-1; c<=myCol+1;c++)
+              if(isValid(r,c))
+                mousePressed();
+        } 
     }
     public void draw () 
     {    
