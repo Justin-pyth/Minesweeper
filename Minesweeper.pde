@@ -76,7 +76,6 @@ public void displayLosingMessage()
   buttons[10][11].setLabel("O");
   buttons[10][12].setLabel("S");
   buttons[10][13].setLabel("E");
-  noLoop();
   
 }
 
@@ -95,7 +94,6 @@ public void displayWinningMessage()
         buttons[rowsss][colsss].clicked= true;
     }
   }
-  noLoop();
 }
 
 public boolean isValid(int r, int c)
